@@ -23,14 +23,12 @@ class EIAQuerying:
         if start_date or end_date == None:
             url = 'https://api.eia.gov/series/?series_id={0}&api_key={1}'.format(series_id,self.api_key)
         else:
-            url = 'https://api.eia.gov/series/?series_id={0}&search_value=[{}T{}Z TO {T}{}Z]&api_key={1}'.format(
-                series_id, 
-                start_date,
-                start_time,
-                end_date,
-                end_time
-                self.api_key
-                )
+            url = 'https://api.eia.gov/series/?series_id={0}&search_value=[{1}T{2}Z TO {3}T{4}Z]&api_key={5}'.format(series_id, 
+                                                                                                                     start_date,
+                                                                                                                     start_time,
+                                                                                                                     end_date,
+                                                                                                                     end_time,
+                                                                                                                     self.api_key)
         json_response = self._get_json_query(url = url)['series']
         series_dict = {}
         i = 0
