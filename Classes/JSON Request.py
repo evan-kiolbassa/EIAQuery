@@ -12,14 +12,25 @@ class EIAQuerying:
         request = requests.get(url = url)
         return request.json()
 
-    def get_series_data(self, series_id):
+    def get_series_data(self, series_id, start_date = None, start_time = None, end_date = None, end_time = None):
         '''
         Accepts a single series_id or a list of series ids of the form
 
         "series_1;series_2;series_3" with a maximum of 100 series that
         can be queried with one request
         '''
-        url = 'https://api.eia.gov/series/?series_id={0}&api_key={1}'.format(series_id,self.api_key)
+
+        if start_date or end_date == None:
+            url = 'https://api.eia.gov/series/?series_id={0}&api_key={1}'.format(series_id,self.api_key)
+        else:
+            url = 'https://api.eia.gov/series/?series_id={0}&search_value=[{}T{}Z TO {T}{}Z]&api_key={1}'.format(
+                series_id, 
+                start_date,
+                start_time,
+                end_date,
+                end_time
+                self.api_key
+                )
         json_response = self._get_json_query(url = url)['series']
         series_dict = {}
         i = 0
@@ -88,4 +99,3 @@ class EIAQuerying:
                     series_string += ';{}'.format(id)
                     return series_string    
     
-              
